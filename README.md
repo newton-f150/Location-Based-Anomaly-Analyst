@@ -29,7 +29,6 @@ By analyzing both dimensions together, the system can determine whether an event
 Many systems verify only whether an object, device, or identity is valid. However, even valid entities can exhibit suspicious behavior. For example:
 
 - A valid access card used at two locations 500km apart within 10 minutes
-- A valid user logging in from New York and Tokyo within 1 hour
 - A valid IoT device sending data from impossible physical locations
 
 This system addresses these gaps by analyzing spatial-temporal consistency.
