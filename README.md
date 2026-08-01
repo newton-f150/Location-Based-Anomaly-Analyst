@@ -2,33 +2,13 @@
 
 A general-purpose intelligent monitoring framework designed to identify unusual or impossible events by analyzing the relationship between **where something happens (spatial data)** and **when it happens (temporal data)**.
 
-## 📋 Table of Contents
-
-- [About The Project](#about-the-project)
-- [Core Concept](#core-concept)
-- [Problem Statement](#problem-statement)
-- [Mathematical Framework](#mathematical-framework)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Applications](#applications)
-- [API Reference](#api-reference)
-- [Contributing](#contributing)
-- [License](#license)
-
 ---
 
 ## About The Project
 
 The Spatial-Temporal Anomaly Detection System is based on the idea that physical events follow natural limitations. Objects, people, devices, or identities cannot instantly move between distant locations. By combining location information with timestamps, the system can detect patterns that are physically impossible or highly unusual.
 
-This concept can be applied across many fields, including:
-- Security systems
-- IoT networks
-- Transportation
-- Access control
-- Asset tracking
-- Identity verification
+This concept can be applied across many fields, including security systems, IoT networks, transportation, access control, asset tracking, and identity verification.
 
 ---
 
@@ -36,24 +16,9 @@ This concept can be applied across many fields, including:
 
 Every event has two important dimensions:
 
-### Spatial Information
-Describes **where** an event occurs.
+**Spatial Information** describes *where* an event occurs. Examples include GPS coordinates, building locations, network locations, sensor positions, and device locations.
 
-**Examples:**
-- GPS coordinates
-- Building locations
-- Network locations
-- Sensor positions
-- Device locations
-
-### Temporal Information
-Describes **when** an event occurs.
-
-**Examples:**
-- Timestamp
-- Duration
-- Frequency
-- Sequence of events
+**Temporal Information** describes *when* an event occurs. Examples include timestamp, duration, frequency, and sequence of events.
 
 By analyzing both dimensions together, the system can determine whether an event is realistic.
 
@@ -62,11 +27,12 @@ By analyzing both dimensions together, the system can determine whether an event
 ## Problem Statement
 
 Many systems verify only whether an object, device, or identity is valid. However, even valid entities can exhibit suspicious behavior. For example:
+
 - A valid access card used at two locations 500km apart within 10 minutes
 - A valid user logging in from New York and Tokyo within 1 hour
 - A valid IoT device sending data from impossible physical locations
 
-This system addresses these gaps by analyzing **spatial-temporal consistency**.
+This system addresses these gaps by analyzing spatial-temporal consistency.
 
 ---
 
@@ -74,50 +40,42 @@ This system addresses these gaps by analyzing **spatial-temporal consistency**.
 
 ### Core Equation
 
-The **Spatial-Temporal Anomaly Score** for an event \( e_i \) is defined as:
+The **Spatial-Temporal Anomaly Score** for an event *eᵢ* is defined as:
 
-\[
-\mathcal{A}(e_i) = \alpha \cdot \mathcal{S}(e_i) + \beta \cdot \mathcal{T}(e_i) + \gamma \cdot \mathcal{C}(e_i)
-\]
+**𝒜(eᵢ) = α · 𝒮(eᵢ) + β · 𝒯(eᵢ) + γ · 𝒞(eᵢ)**
 
 Where:
-- \( \mathcal{A}(e_i) \) = Anomaly score (higher = more anomalous)
-- \( \mathcal{S}(e_i) \) = Spatial anomaly component
-- \( \mathcal{T}(e_i) \) = Temporal anomaly component  
-- \( \mathcal{C}(e_i) \) = Spatio-temporal coupling component
-- \( \alpha, \beta, \gamma \) = Weighting coefficients (\( \alpha + \beta + \gamma = 1 \))
+- **𝒜(eᵢ)** = Anomaly score (higher = more anomalous)
+- **𝒮(eᵢ)** = Spatial anomaly component
+- **𝒯(eᵢ)** = Temporal anomaly component  
+- **𝒞(eᵢ)** = Spatio-temporal coupling component
+- **α, β, γ** = Weighting coefficients (α + β + γ = 1)
 
 ---
 
 ### Component 1: Spatial Anomaly
 
-\[
-\mathcal{S}(e_i) = \frac{d(e_i, \mu_{spatial})}{\sigma_{spatial} + \epsilon}
-\]
+**𝒮(eᵢ) = d(eᵢ, μ_spatial) / (σ_spatial + ε)**
 
 Where:
-- \( d(e_i, \mu_{spatial}) \) = Spatial distance from expected location (e.g., Haversine distance for GPS)
-- \( \mu_{spatial} \) = Expected spatial centroid (historical mean)
-- \( \sigma_{spatial} \) = Spatial standard deviation
-- \( \epsilon \) = Small constant to avoid division by zero
+- **d(eᵢ, μ_spatial)** = Spatial distance from expected location (e.g., Haversine distance for GPS)
+- **μ_spatial** = Expected spatial centroid (historical mean)
+- **σ_spatial** = Spatial standard deviation
+- **ε** = Small constant to avoid division by zero
 
 ---
 
 ### Component 2: Temporal Anomaly
 
-\[
-\mathcal{T}(e_i) = \frac{|t_i - \mu_{temporal}|}{\sigma_{temporal} + \epsilon}
-\]
+**𝒯(eᵢ) = |tᵢ - μ_temporal| / (σ_temporal + ε)**
 
 Where:
-- \( t_i \) = Timestamp of event \( i \)
-- \( \mu_{temporal} \) = Expected time (historical mean, or periodic mean for daily/weekly patterns)
-- \( \sigma_{temporal} \) = Temporal standard deviation
+- **tᵢ** = Timestamp of event *i*
+- **μ_temporal** = Expected time (historical mean, or periodic mean for daily/weekly patterns)
+- **σ_temporal** = Temporal standard deviation
 
 For **periodic patterns** (daily cycles):
-\[
-\mu_{temporal} = \text{mod}(t_i, 24 \text{ hours}) \quad \text{(circular mean)}
-\]
+**μ_temporal = mod(tᵢ, 24 hours)** (circular mean)
 
 ---
 
@@ -125,22 +83,15 @@ For **periodic patterns** (daily cycles):
 
 This is the critical component that detects **physical impossibilities**:
 
-\[
-\mathcal{C}(e_i, e_{i-1}) = 
-\begin{cases} 
-0, & \text{if } v(e_i, e_{i-1}) \leq v_{max} \\
-\frac{v(e_i, e_{i-1}) - v_{max}}{v_{max}}, & \text{if } v(e_i, e_{i-1}) > v_{max}
-\end{cases}
-\]
+**𝒞(eᵢ, eᵢ₋₁) = 0**, if v(eᵢ, eᵢ₋₁) ≤ v_max  
+**𝒞(eᵢ, eᵢ₋₁) = (v(eᵢ, eᵢ₋₁) - v_max) / v_max**, if v(eᵢ, eᵢ₋₁) > v_max
 
 Where:
-\[
-v(e_i, e_{i-1}) = \frac{d(e_i, e_{i-1})}{\Delta t}
-\]
+**v(eᵢ, eᵢ₋₁) = d(eᵢ, eᵢ₋₁) / Δt**
 
-- \( d(e_i, e_{i-1}) \) = Spatial distance between consecutive events
-- \( \Delta t = t_i - t_{i-1} \) = Time difference between consecutive events
-- \( v_{max} \) = Maximum physically possible speed (configurable per context)
+- **d(eᵢ, eᵢ₋₁)** = Spatial distance between consecutive events
+- **Δt = tᵢ - tᵢ₋₁** = Time difference between consecutive events
+- **v_max** = Maximum physically possible speed (configurable per context)
 
 ---
 
@@ -148,12 +99,10 @@ v(e_i, e_{i-1}) = \frac{d(e_i, e_{i-1})}{\Delta t}
 
 An event is classified as **anomalous** if:
 
-\[
-\mathcal{A}(e_i) > \theta
-\]
+**𝒜(eᵢ) > θ**
 
-Where \( \theta \) is a threshold determined by:
-- Statistical methods (e.g., \( \mu_{\mathcal{A}} + 3\sigma_{\mathcal{A}} \))
+Where **θ** is a threshold determined by:
+- Statistical methods (e.g., μ_𝒜 + 3σ_𝒜)
 - Percentile-based (e.g., 99th percentile of historical scores)
 - Domain-specific expert rules
 
@@ -161,13 +110,11 @@ Where \( \theta \) is a threshold determined by:
 
 ### Extended Multi-Event Formulation
 
-For analyzing a sequence of \( n \) events:
+For analyzing a sequence of *n* events:
 
-\[
-\mathcal{A}_{sequence} = \frac{1}{n} \sum_{i=1}^n \mathcal{A}(e_i) + \lambda \cdot \max_{i=2..n} \mathcal{C}(e_i, e_{i-1})
-\]
+**𝒜_sequence = (1/n) · Σᵢ₌₁ⁿ 𝒜(eᵢ) + λ · maxᵢ₌₂..ₙ 𝒞(eᵢ, eᵢ₋₁)**
 
-Where \( \lambda \) weights the maximum velocity violation (to catch "teleportation" events).
+Where **λ** weights the maximum velocity violation (to catch "teleportation" events).
 
 ---
 
@@ -175,19 +122,13 @@ Where \( \lambda \) weights the maximum velocity violation (to catch "teleportat
 
 The system can adapt online using exponential moving averages:
 
-\[
-\mu_{spatial}^{(t)} = \rho \cdot \mu_{spatial}^{(t-1)} + (1-\rho) \cdot \text{location}_t
-\]
+**μ_spatial⁽ᵗ⁾ = ρ · μ_spatial⁽ᵗ⁻¹⁾ + (1-ρ) · locationₜ**
 
-\[
-\mu_{temporal}^{(t)} = \rho \cdot \mu_{temporal}^{(t-1)} + (1-\rho) \cdot t
-\]
+**μ_temporal⁽ᵗ⁾ = ρ · μ_temporal⁽ᵗ⁻¹⁾ + (1-ρ) · t**
 
-\[
-\sigma_{spatial}^{(t)} = \rho \cdot \sigma_{spatial}^{(t-1)} + (1-\rho) \cdot |\text{location}_t - \mu_{spatial}^{(t)}|
-\]
+**σ_spatial⁽ᵗ⁾ = ρ · σ_spatial⁽ᵗ⁻¹⁾ + (1-ρ) · |locationₜ - μ_spatial⁽ᵗ⁾|**
 
-Where \( \rho \) is the forgetting factor (typically 0.9-0.99).
+Where **ρ** is the forgetting factor (typically 0.9-0.99).
 
 ---
 
@@ -195,20 +136,107 @@ Where \( \rho \) is the forgetting factor (typically 0.9-0.99).
 
 For systems with additional metadata (user ID, device type, etc.), extend to:
 
-\[
-\mathcal{A}_{total}(e_i) = \mathcal{A}(e_i) + \sum_{k=1}^m w_k \cdot \mathcal{D}_k(e_i)
-\]
+**𝒜_total(eᵢ) = 𝒜(eᵢ) + Σₖ₌₁ᵐ wₖ · 𝒟ₖ(eᵢ)**
 
-Where \( \mathcal{D}_k \) are domain-specific anomaly scores for other dimensions.
+Where **𝒟ₖ** are domain-specific anomaly scores for other dimensions.
 
 ---
 
-## Installation
+## Card Cloning Detection Use Case
 
-### Prerequisites
-- Python 3.8+
-- pip package manager
+### Overview
 
-### Install from PyPI
-```bash
-pip install spatial-temporal-anomaly
+This system is particularly effective for detecting credit/debit card cloning and fraudulent transactions. Card cloning typically involves creating a duplicate card and using it at a different location simultaneously or in quick succession. The spatial-temporal analysis can instantly flag such impossible movements.
+
+### Detection Scenario
+
+**Scenario**: A legitimate cardholder is in London, but a cloned card is used in New York 30 minutes later.
+
+**Detection Process**:
+1. Transaction 1: London, UK (51.5074° N, 0.1278° W) at 14:00
+2. Transaction 2: New York, USA (40.7128° N, 74.0060° W) at 14:30
+
+**Analysis**:
+- Distance: ~5,570 km (great-circle distance)
+- Time difference: 30 minutes = 1800 seconds
+- Required speed: 5,570,000 / 1800 ≈ 3,094 m/s (~11,140 km/h)
+- This exceeds any physically possible travel speed for a cardholder
+
+**Result**: Anomaly detected immediately
+
+### Transaction Processing Example
+
+```python
+from spatial_temporal_anomaly import CardTransactionDetector
+from datetime import datetime
+
+# Initialize detector with card-specific configuration
+detector = CardTransactionDetector(
+    velocity_threshold=50.0,      # 180 km/h (reasonable travel speed)
+    transaction_window=3600,       # 1 hour window for velocity checks
+    fraud_threshold=0.85,          # 85% probability triggers alert
+    use_location_history=True      # Learn cardholder's patterns
+)
+
+# Track transactions per card
+card_transactions = {
+    'card_1234': [
+        {
+            'card_id': '1234',
+            'merchant': 'Coffee Shop London',
+            'amount': 4.50,
+            'latitude': 51.5074,
+            'longitude': -0.1278,
+            'timestamp': datetime(2024, 1, 15, 14, 0, 0)
+        },
+        {
+            'card_id': '1234', 
+            'merchant': 'Electronics Store NYC',
+            'amount': 1299.99,
+            'latitude': 40.7128,
+            'longitude': -74.0060,
+            'timestamp': datetime(2024, 1, 15, 14, 30, 0)  # 30 minutes later
+        }
+    ]
+}
+
+# Process transactions
+for card_id, transactions in card_transactions.items():
+    results = detector.analyze_transactions(transactions)
+    
+    for result in results:
+        if result['fraud_probability'] > 0.8:
+            print(f"🚨 FRAUD ALERT! Card {card_id}")
+            print(f"   Score: {result['fraud_probability']:.2%}")
+            print(f"   Reason: {result['reason']}")
+            print(f"   Distance: {result['distance_km']:.0f} km")
+            print(f"   Time: {result['time_minutes']:.0f} minutes")
+            print(f"   Required Speed: {result['required_speed_kmh']:.0f} km/h")
+```
+
+```
+from spatial_temporal_anomaly import CardCloningDetector
+
+# Detect card cloning across multiple merchants
+cloning_detector = CardCloningDetector(
+    temporal_threshold=300,        # 5 minutes
+    spatial_threshold=100000,      # 100 km
+    velocity_threshold=100.0,      # 360 km/h (flight speed)
+    duplicate_check_window=3600,   # 1 hour
+    merchant_risk_scoring=True,
+    amount_anomaly_detection=True
+)
+
+# Analyze batch of transactions
+batch_results = cloning_detector.detect_cloning_batch(
+    transactions=all_transactions,
+    batch_size=1000,
+    parallel_processing=True
+)
+
+# Generate fraud report
+report = cloning_detector.generate_report(batch_results)
+print(f"Potential cloning incidents: {report['cloning_incidents']}")
+print(f"At-risk cards: {report['at_risk_cards']}")
+print(f"High-risk merchants: {report['high_risk_merchants']}")
+```
