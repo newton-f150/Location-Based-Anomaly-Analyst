@@ -1,4 +1,4 @@
-# Spatial-Temporal Anomaly Detection System
+# Spatial-Temporal Anomaly Detection : LB2A
 
 A general-purpose intelligent monitoring framework designed to identify unusual or impossible events by analyzing the relationship between **where something happens (spatial data)** and **when it happens (temporal data)**.
 
